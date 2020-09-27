@@ -24,7 +24,6 @@ class Individuo():
             else: 
                 self.cromossomo.append('1')
         
-
 #Função que retorna todos os produtos
 def append_produtos():
     lista_produtos = []
@@ -44,7 +43,27 @@ def append_produtos():
     lista_produtos.append(Produto("Notebook Asus", 0.527, 3999.00))
     return lista_produtos
 
-#Função principal
+#Função que retorna o array de cada atributo
+#Recebe uma lista de objetos da classe produto
+def append_espaco_valores_nomes(lista_produtos):
+    espacos = []
+    valores = []
+    nomes = []
+    
+    for produto in lista_produtos:
+        espacos.append(produto.espaco)
+        valores.append(produto.valor)
+        nomes.append(produto.nome)
+    
+    return espacos, valores, nomes
+
+#######################################################
+######################Função principal#################
+#######################################################
+    
 if __name__ == '__main__':
     lista_produtos = append_produtos()
+    espacos, valores, nomes = append_espaco_valores_nomes(lista_produtos)
+    print(nomes)
     
+
