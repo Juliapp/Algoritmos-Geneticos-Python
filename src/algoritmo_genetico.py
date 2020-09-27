@@ -10,13 +10,13 @@ class Produto:
 #E o objetivo é conseguir o indivíduo com melhor lucro.
 class Individuo():
     def __init__(self, espacos, valores, limite_espacos, geracao=0):
-        self.espacos = espacos
-        self.valores = valores
+        self.espacos = espacos      #todos os espaços dos produtos
+        self.valores = valores      #todos os valores dos produtos
         self.limite_espacos = limite_espacos    #Limite do exemplo = 3m²
         self.nota_avaliacao = 0     #nota de um indivíduo de acordo aos outros
-        self.espaco_usado = 0
-        self.geracao = geracao
-        self.cromossomo = []    #sequencia de 0 e 1 pra dizer o que vai ser levado
+        self.espaco_usado = 0       #espaço que esse individuo ocupa
+        self.geracao = geracao      #
+        self.cromossomo = []        #sequencia de 0 e 1 pra dizer o que vai ser levado
         
         #inicializando o cromossomo com valores aleatórios (0s e 1s)
         for i in range(len(espacos)):
@@ -68,7 +68,6 @@ def append_espaco_valores_nomes(lista_produtos):
     nomes = []
     
     for produto in lista_produtos:
-        print(produto.espaco)
         espacos.append(produto.espaco)
         valores.append(produto.valor)
         nomes.append(produto.nome)
@@ -82,7 +81,6 @@ if __name__ == '__main__':
     lista_produtos = append_produtos()
     dictValues = append_espaco_valores_nomes(lista_produtos)
 
-    
     espacos = dictValues['espacos']
     valores = dictValues['valores']
     nomes = dictValues['nomes']
