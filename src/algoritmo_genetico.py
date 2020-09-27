@@ -3,7 +3,7 @@ from random import random
 class Produto:
     def __init__(self, nome, espaco, valor):
         self.nome = nome
-        self.espaco = espaco,
+        self.espaco = espaco
         self.valor = valor
 
 #Um individuo é composto de quais produtos vão ser levados no carregamento
@@ -14,6 +14,7 @@ class Individuo():
         self.valores = valores
         self.limite_espacos = limite_espacos    #Limite do exemplo = 3m²
         self.nota_avaliacao = 0     #nota de um indivíduo de acordo aos outros
+        self.espaco_usado = 0
         self.geracao = geracao
         self.cromossomo = []    #sequencia de 0 e 1 pra dizer o que vai ser levado
         
@@ -24,6 +25,22 @@ class Individuo():
             else: 
                 self.cromossomo.append('1')
         
+    #Definindo a nota de avaliação daquele individuo e 
+    #Quanto ele usou de espaço
+    def avaliacao(self):
+        nota = 0
+        soma_espacos = 0
+        for i in range(len(self.cromossomo)):
+            if self.cromossomo[i] == '1':
+                nota += self.valores[i]
+                soma_espacos += self.espacos[i]
+                
+        if soma_espacos > self.limite_espacos:
+            nota = 1
+            
+        self.nota_avaliacao = nota
+        self.espaco_usado  = soma_espacos
+            
 #Função que retorna todos os produtos
 def append_produtos():
     lista_produtos = []
@@ -39,7 +56,7 @@ def append_produtos():
     lista_produtos.append(Produto("Microondas Panasonic", 0.0319, 299.29))
     lista_produtos.append(Produto("Geladeira Brastemp", 0.635, 849.00))
     lista_produtos.append(Produto("Geladeira Consul", 0.870, 1199.89))
-    lista_produtos.append(Produto("Notebook Lenovo", 0.498, 1999.90))
+    lista_produtos.append(Produto("Notebook Lenovo",0.498, 1999.90))
     lista_produtos.append(Produto("Notebook Asus", 0.527, 3999.00))
     return lista_produtos
 
@@ -51,19 +68,31 @@ def append_espaco_valores_nomes(lista_produtos):
     nomes = []
     
     for produto in lista_produtos:
+        print(produto.espaco)
         espacos.append(produto.espaco)
         valores.append(produto.valor)
         nomes.append(produto.nome)
     
-    return espacos, valores, nomes
+    return { 'espacos' : espacos, 'valores': valores, 'nomes' : nomes }
 
 #######################################################
 ######################Função principal#################
-#######################################################
     
 if __name__ == '__main__':
     lista_produtos = append_produtos()
-    espacos, valores, nomes = append_espaco_valores_nomes(lista_produtos)
-    print(nomes)
+    dictValues = append_espaco_valores_nomes(lista_produtos)
+
+    
+    espacos = dictValues['espacos']
+    valores = dictValues['valores']
+    nomes = dictValues['nomes']
+    
+    limite = 3  #limite de 3m³ pra uma carga
+    
+    individuo1 = Individuo(espacos, valores, limite)
+    individuo1.avaliacao()
+    
+    
+    
     
 
