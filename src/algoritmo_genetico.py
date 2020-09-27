@@ -1,13 +1,33 @@
+from random import random
+
 class Produto:
     def __init__(self, nome, espaco, valor):
         self.nome = nome
         self.espaco = espaco,
         self.valor = valor
+
+#Um individuo é composto de quais produtos vão ser levados no carregamento
+#E o objetivo é conseguir o indivíduo com melhor lucro.
+class Individuo():
+    def __init__(self, espacos, valores, limite_espacos, geracao=0):
+        self.espacos = espacos
+        self.valores = valores
+        self.limite_espacos = limite_espacos    #Limite do exemplo = 3m²
+        self.nota_avaliacao = 0     #nota de um indivíduo de acordo aos outros
+        self.geracao = geracao
+        self.cromossomo = []    #sequencia de 0 e 1 pra dizer o que vai ser levado
+        
+        #inicializando o cromossomo com valores aleatórios (0s e 1s)
+        for i in range(len(espacos)):
+            if random() < 0.5:
+                self.cromossomo.append('0')
+            else: 
+                self.cromossomo.append('1')
         
 
 #Função que retorna todos os produtos
 def append_produtos():
-    lista_procutos = []
+    lista_produtos = []
     lista_produtos.append(Produto("Geladeira Dako", 0.751, 999.90))
     lista_produtos.append(Produto("Iphone 6", 0.0000899, 2911.12))
     lista_produtos.append(Produto("TV 55' ", 0.400, 4346.99))
@@ -22,7 +42,7 @@ def append_produtos():
     lista_produtos.append(Produto("Geladeira Consul", 0.870, 1199.89))
     lista_produtos.append(Produto("Notebook Lenovo", 0.498, 1999.90))
     lista_produtos.append(Produto("Notebook Asus", 0.527, 3999.00))
-    return lista_procutos
+    return lista_produtos
 
 #Função principal
 if __name__ == '__main__':
