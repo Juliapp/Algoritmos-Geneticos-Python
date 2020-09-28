@@ -40,9 +40,56 @@ class Individuo():
             
         self.nota_avaliacao = nota
         self.espaco_usado  = soma_espacos
+        
+    def crossover(self, outro_individuo):
+        corte = round(random() * len(self.cromossomo))
+        filho1 = outro_individuo.cromossomo[0: corte] + self.cromossomo[corte::]
+        filho2 = self.cromossomo[0:corte] + outro_individuo[corte::]
+        
+        filhos = [Individuo(self.espacos, self.valores, self.limite_espacos, self.geracao + 1),
+                  Individuo(self.espacos, self.valores, self.limite_espacos, self.geracao + 1)]
+        
+        filhos[0].cromossomo = filho1
+        filhos[1].cromossomo = filho2
+        
+        return filhos
+    
+    def mutacao(self, taxa_mutacao):
+        for i in range(len(self.cromossomo)):
+            if random() < taxa_mutacao:
+                if self.cromossomo[i] == '1':
+                    self.cromossomo[i] = '0'
+                else:
+                    self.cromossomo[i] = '1'
+                    
+        return self
+
+        
+
+class AlgoritmoGenetico:
+    def __init__(self, tamanho_populacao):
+        self.tamanho_populacao = tamanho_populacao
+        self.populacao = []
+        self.geracao = 0
+        self.melhor_solucao = 0
+        
+    def initialize_populacap(self, espacos, valores, limites_espacos):
+        for i in range(self.tamanho_populacao):
+            self.populacao.append(Individuo(espacos, valores, limites_espacos))
             
+        self.melhor_solucao = self.populacao[0] #inicializa qual melhor individuo, mas ainda será setado
+
+    def ordenar_populacao(self):
+        self.populacao = sorted(self.populacao, 
+                            key = lambda populacao: populacao.nota_avaliacao,
+                            reverse = True)
+        
+    def melhor_individuo(self, individuo):
+        if individuo.nota_avaliacao > self.melhor_solucao.nota_avaliacao:
+            self.melhor_solucao = individuo
+
 #Função que retorna todos os produtos
-def append_produtos():
+def append_produtos(): 
     lista_produtos = []
     lista_produtos.append(Produto("Geladeira Dako", 0.751, 999.90))
     lista_produtos.append(Produto("Iphone 6", 0.0000899, 2911.12))
@@ -79,16 +126,30 @@ def append_espaco_valores_nomes(lista_produtos):
     
 if __name__ == '__main__':
     lista_produtos = append_produtos()
+    
     dictValues = append_espaco_valores_nomes(lista_produtos)
-
     espacos = dictValues['espacos']
     valores = dictValues['valores']
     nomes = dictValues['nomes']
     
     limite = 3  #limite de 3m³ pra uma carga
     
-    individuo1 = Individuo(espacos, valores, limite)
-    individuo1.avaliacao()
+    tamanho_populacao = 20
+    ag = AlgoritmoGenetico(tamanho_populacao)
+    ag.initialize_populacap(espacos, valores, limite)
+    
+    for individuo in ag.populacao:
+        individuo.avaliacao()
+    
+    ag.ordenar_populacao()
+    
+    ag.melhor_individuo(ag.populacao[0])
+    
+    print(ag.melhor_solucao.cromossomo)
+    print(ag.melhor_solucao.nota_avaliacao)
+        
+    
+
     
     
     
